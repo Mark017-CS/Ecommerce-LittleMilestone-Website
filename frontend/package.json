@@ -17,7 +17,7 @@
     "country-state-city": "^3.0.1",
     "overlay-navbar": "^1.1.1",
     "package.json": "^1.0.0",
-    "react": "^18.0.0",
+    "react": "^18.2.0",
     "react-alert": "^7.0.3",
     "react-alert-template-basic": "^1.0.2",
     "react-chartjs-2": "^3.0.4",
