@@ -77,12 +77,41 @@ exports.getAllOrders = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+// update Order Status -- User
+exports.updateOrders = catchAsyncErrors(async (req, res, next) => {
+  const order = await Order.findById(req.params.id);
+
+  if (order.orderStatus === "Delivered") {
+    return next(new ErrorHander("You have already set this as delivered", 400));
+  }
+
+  if (req.body.status === "Shipped") {
+    order.orderItems.forEach(async (o) => {
+      await updateStock(o.product, o.quantity);
+    });
+  }
+  order.orderStatus = req.body.status;
+
+  if (req.body.status === "Delivered") {
+    order.deliveredAt = Date.now();
+  }
+
+  await order.save({ validateBeforeSave: false });
+  res.status(200).json({
+    success: true,
+  });
+});
+
 // update Order Status -- Admin
 exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
 
   if (!order) {
     return next(new ErrorHander("Order not found with this Id", 404));
+  }
+
+  if (order.orderStatus === "Refunded") {
+    return next(new ErrorHander("You have already refunded this order", 400));
   }
 
   if (order.orderStatus === "Delivered") {
