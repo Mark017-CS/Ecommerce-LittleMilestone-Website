@@ -100,16 +100,7 @@ const Cart = ({ history }) => {
                 )}`}</p>
               </div>
               <div className="checkOutBtn">
-              {cartItems &&
-              cartItems.map((item) => (
-              
-              <button
-                    disabled={item.stock < 1 ? true : false}
-                    onClick={checkoutHandler}
-                  >
-                    Checkout
-                  </button>               
-                    ))};
+                <button onClick={checkoutHandler}>Check Out</button>
               </div>
             </div>
           </div>
